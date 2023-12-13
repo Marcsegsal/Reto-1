@@ -1,27 +1,28 @@
-public class ModuloUsuario {
-    public static void main(String[] args) throws IOException {
-        Scanner myObj = new Scanner(System.in);
+import java.util.Scanner;
 
+public class ModuloUsuario {
+    static Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) {
         int eleccionMenu;
 
         do {
             mostrarMenu();
-            eleccionMenu = myObj.nextInt();
+            eleccionMenu = scanner.nextInt();
 
             if (eleccionMenu < 0 || eleccionMenu > 3) {
                 System.out.println("El número introducido no es válido, por favor introduce otro número");
             }
             switch (eleccionMenu) {
                 case 1:
-                    GenerarPeticion();
+                    generarPeticion();
                     System.out.println();
                     break;
                 case 2:
-                    ModificarDescripcion();
+                    modificarDescripcion();
                     System.out.println();
                     break;
                 case 3:
-                    ConsultarPeticion();
+                    consultarPeticion();
                     System.out.println();
                     System.out.println();
                     break;
@@ -34,5 +35,11 @@ public class ModuloUsuario {
         System.out.println("2-Modificar la petición");
         System.out.println("3-Consultar la petición");
     }
+
+    public static void generarPeticion() {}
+
+    public static void consultarPeticion() {}
+
+    public static void modificarDescripcion() {}
 
 }
