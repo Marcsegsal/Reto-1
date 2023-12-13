@@ -36,6 +36,16 @@ public class ModuloUsuario {
         System.out.println("3-Consultar la petición");
     }
 
+    public static void identificarse() {}
+
+    public static void cargarDatosUsuario() {}
+
+    public static void cargarDatosPeticiones() {}
+
+    public static void cargarDatosCategorias() {}
+
+    public static void guardarDatosPeticiones() {}
+
     public static void generarPeticion() {}
 
     public static void consultarPeticion() {}
