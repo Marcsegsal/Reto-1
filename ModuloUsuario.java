@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 
 public class ModuloUsuario {
@@ -38,7 +39,19 @@ public class ModuloUsuario {
 
     public static void identificarse() {}
 
-    public static void cargarDatosUsuario() {}
+    public static void cargarDatosUsuario() {
+        try {
+            BufferedReader f_ent = new BufferedReader(new FileReader(new File("./Usuarios.csv")));
+            String linea = f_ent.readLine();
+            while (linea != null) {
+                linea = f_ent.readLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 
     public static void cargarDatosPeticiones() {}
 
