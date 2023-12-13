@@ -1,0 +1,47 @@
+import java.util.Scanner;
+import java.io.*;
+import java.util.ArrayList;
+
+
+public class ModuloUsuario {
+    public static void main(String[] args) throws IOException {
+        Scanner myObj = new Scanner(System.in);
+
+        int eleccionMenu;
+
+        do {
+            mostrarMenu();
+            eleccionMenu = myObj.nextInt();
+
+            if (eleccionMenu < 0 || eleccionMenu > 4) {
+                System.out.println("El número introducido no es válido, por favor introduce otro número");
+            }
+            switch (eleccionMenu) {
+                case 1:
+                    Salir();
+                    System.out.println();
+                    break;
+                case 2:
+                    GenerarPeticion();
+                    System.out.println();
+                    break;
+                case 3:
+                    ModificarDescripcion();
+                    System.out.println();
+                    System.out.println();
+                    break;
+                case 4:
+                    ConsultarPeticion();
+                    System.out.println();
+                    break;
+            }
+        } while (eleccionMenu != 0);
+    }
+    public static void mostrarMenu() {
+        System.out.println("0-Salir del programa");
+        System.out.println("1-Generar una petición");
+        System.out.println("2-Modificar la petición");
+        System.out.println("3-Consultar la petición");
+    }
+
+}
