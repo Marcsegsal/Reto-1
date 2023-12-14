@@ -28,7 +28,9 @@ public class ModuloUsuario {
                     System.out.println();
                     break;
                 case 2:
-                    modificarDescripcion();
+                    ArrayList<Peticion> peticionesUsuario = filtrarPeticionesPorUsuario(usuarioActual.getId());
+                    imprimirPeticiones(peticionesUsuario);
+                    //modificarDescripcion();
                     System.out.println();
                     break;
                 case 3:
@@ -118,7 +120,22 @@ public class ModuloUsuario {
 
     public static void consultarPeticion() {}
 
-    public static void modificarDescripcion() {}
+    public static ArrayList<Peticion> filtrarPeticionesPorUsuario(int idUsuario) {
+        ArrayList<Peticion> peticionesUsuario = new ArrayList<>();
+
+        for (int i = 0; i < peticionesUsuario.size(); i++) {
+            if (idUsuario == peticiones.get(i).getIdUsuario()) {
+                peticionesUsuario.add(peticiones.get(i));
+            }
+        }
+        return peticionesUsuario;
+    }
+
+    public static void imprimirPeticiones(ArrayList<Peticion> listaPeticiones) {
+        for (Peticion peticion : listaPeticiones) {
+            System.out.println();
+        }
+    }
 
     public static boolean stringToBoolean(String s) {
         boolean b;
