@@ -1,5 +1,7 @@
 import java.io.*;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ModuloUsuario {
@@ -95,6 +97,16 @@ public class ModuloUsuario {
         }
         return null; // Devuelve null si no encuentra al usuario con la ID dada
     }
+
+    public static Categoria buscarCategoriaPorId(int id) {
+        for (Categoria categoria : categorias) {
+            if (categoria.getId() == id) {
+                return categoria;
+            }
+        }
+        return null; // Devuelve null si no encuentra al usuario con la ID dada
+    }
+
     public static void pedirPassword(){
         if (usuarioEncontrado!=null){
             System.out.println("Ingresa tu contraseña");
@@ -202,7 +214,7 @@ public class ModuloUsuario {
     public static ArrayList<Peticion> filtrarPeticionesPorUsuario(int idUsuario) {
         ArrayList<Peticion> peticionesUsuario = new ArrayList<>();
 
-        for (int i = 0; i < peticionesUsuario.size(); i++) {
+        for (int i = 0; i < peticiones.size(); i++) {
             if (idUsuario == peticiones.get(i).getIdUsuario()) {
                 peticionesUsuario.add(peticiones.get(i));
             }
@@ -212,6 +224,13 @@ public class ModuloUsuario {
 
     public static void imprimirPeticiones(ArrayList<Peticion> listaPeticiones) {
         for (Peticion peticion : listaPeticiones) {
+            Usuario usuarioActual = buscarUsuarioPorId(peticion.getId());
+            Categoria categoria = buscarCategoriaPorId(peticion.getIdCategoria());
+
+            System.out.println("ID: " + peticion.getId() + "\t|\tFecha: " + peticion.getFecha() + "\t|\tPor: " + usuarioActual.getNombre());
+            assert categoria != null;
+            System.out.println("Categoría: " + categoria.getCategoria());
+            System.out.println("Descripción: " + peticion.getDescripcion());
             System.out.println();
         }
     }
