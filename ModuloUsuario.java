@@ -1,11 +1,15 @@
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ModuloUsuario {
     static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     public static void main(String[] args) {
         int eleccionMenu;
 
         do {
+            cargarDatosUsuario();
             mostrarMenu();
             eleccionMenu = scanner.nextInt();
 
@@ -38,7 +42,22 @@ public class ModuloUsuario {
 
     public static void identificarse() {}
 
-    public static void cargarDatosUsuario() {}
+    public static void cargarDatosUsuario() {
+        try {
+            BufferedReader f_ent = new BufferedReader(new FileReader(new File("./CSV/usuario.csv")));
+            String linea = f_ent.readLine();
+            linea = f_ent.readLine();
+
+            while (linea != null) {
+                String[] palabras = linea.split(",");
+                usuarios.add(new Usuario((Integer.parseInt(palabras[0])), palabras[1], palabras[2]));
+                linea = f_ent.readLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public static void cargarDatosPeticiones() {}
 
@@ -51,5 +70,4 @@ public class ModuloUsuario {
     public static void consultarPeticion() {}
 
     public static void modificarDescripcion() {}
-
 }
