@@ -27,6 +27,7 @@ public class ModuloUsuario {
         do {
             cargarDatosUsuario();
             cargarDatosPeticiones();
+            cargarDatosCategorias();
             //Borrar luego
             mostrarUsuarios();
             //Borrar luego
@@ -152,6 +153,7 @@ public class ModuloUsuario {
         try{
             BufferedReader f_in= new BufferedReader(new FileReader(new File("./CSV/categoria.csv")));
             String fila=f_in.readLine();
+            fila=f_in.readLine();
             while(fila !=null){
                 String[] atributo =fila.split(",");
                 categorias.add(new Categoria((Integer.parseInt(atributo[0])),atributo [1]));
@@ -166,7 +168,7 @@ public class ModuloUsuario {
 
     public static void guardarDatosPeticiones() {
         try {
-            PrintWriter f_sal = new PrintWriter(new FileWriter("./CSV/peticion.csv"));
+            PrintWriter f_sal = new PrintWriter(new FileWriter(("./CSV/peticion.csv"), false), false);
             Peticion peticion;
 
             f_sal.println("idPeticion,idUsuario,descripcion,fecha,idCategoria,idAdmin,estado,resuelta");
