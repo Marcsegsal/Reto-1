@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class ModuloUsuario {
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+    static ArrayList<Categoria> categorias=new ArrayList<>();
     public static void main(String[] args) {
         int eleccionMenu;
 
@@ -61,7 +62,21 @@ public class ModuloUsuario {
 
     public static void cargarDatosPeticiones() {}
 
-    public static void cargarDatosCategorias() {}
+    public static void cargarDatosCategorias() {
+        try{
+            BufferedReader f_in= new BufferedReader(new FileReader(new File("./CSV/categoria.csv")));
+            String fila=f_in.readLine();
+            while(fila !=null){
+                String[] atributo =fila.split(",");
+                categorias.add(new Categoria((Integer.parseInt(atributo[0])),atributo [1]));
+                fila= f_in.readLine();
+
+            }
+            f_in.close();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
 
     public static void guardarDatosPeticiones() {}
 
