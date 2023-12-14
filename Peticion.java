@@ -1,13 +1,17 @@
 public class Peticion {
     private int id;
-    private String usuario;
+    private int idUsuario;
     private String descripcion;
     private String fecha;
     private int idCategoria;
+    private int idAdmin;
+    private int estado;
+    private boolean resuelta;
 
-    Peticion(int id, String usuario, String descripcion, String categoria, String fecha, int idCategoria) {
+
+    Peticion(int id, int idUsuario, String descripcion, String fecha, int idCategoria, int idAdmin, int estado, boolean resuelta) {
         this.id = id;
-        this.usuario = usuario;
+        this.idUsuario = idUsuario;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.idCategoria = idCategoria;
@@ -17,8 +21,8 @@ public class Peticion {
         return id;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
     public String getDescripcion() {
@@ -33,12 +37,24 @@ public class Peticion {
         return idCategoria;
     }
 
+    public int getIdAdmin() {
+        return idAdmin;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public boolean getResuelta() {
+        return resuelta;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public void setDescripcion(String descripcion) {
@@ -51,5 +67,17 @@ public class Peticion {
 
     public void setIdCategoria(int idCategoria) {
         this.idCategoria = idCategoria;
+    }
+
+    public void setIdAdmin(int idAdmin) {
+        this.idAdmin = idAdmin;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public void setResuelta(boolean resuelta) {
+        this.resuelta = resuelta;
     }
 }
