@@ -4,15 +4,33 @@ import java.util.Scanner;
 
 public class ModuloUsuario {
     static Scanner scanner = new Scanner(System.in);
-    static Usuario usuarioActual;
+
+    static Usuario usuarioActual;//Se usa?? Borrar más adelante
+    static Usuario usuarioEncontrado;
+    static String passwordIngresada;
+    static boolean loginExitoso = false;
+
     static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     static ArrayList<Categoria> categorias=new ArrayList<>();
     static ArrayList<Peticion> peticiones = new ArrayList<>();
+
+    //Método que he usado para recorrer el arraylist usuarios
+    //No es necesario pero podría mantenerse como una opción a la que puede acceder el admin
+    public static void mostrarUsuarios() {
+        for (Usuario usuario : usuarios) {
+            System.out.println("ID: " + usuario.getId() + ", Nombre: " + usuario.getNombre() + ", Contraseña: " + usuario.getPassword());
+        }
+    }
     public static void main(String[] args) {
         int eleccionMenu;
+        String rol = "usuario";
 
         do {
             cargarDatosUsuario();
+            //Borrar luego
+            mostrarUsuarios();
+            //Borrar luego
+            while(!loginExitoso){identificarse(rol);}
             mostrarMenu();
             eleccionMenu = scanner.nextInt();
 
@@ -20,8 +38,8 @@ public class ModuloUsuario {
                 System.out.println("El número introducido no es válido, por favor introduce otro número");
             }
             if (eleccionMenu == 0)
-                guardarDatosPeticiones();
-            
+            guardarDatosPeticiones();
+
             switch (eleccionMenu) {
                 case 1:
                     generarPeticion();
@@ -46,7 +64,40 @@ public class ModuloUsuario {
         System.out.println("3-Consultar la petición");
     }
 
-    public static void identificarse() {}
+    public static void identificarse(String rol){
+        System.out.println("Ingresa tu ID de " + rol);
+        int idIngresada = scanner.nextInt();
+        usuarioEncontrado = buscarUsuarioPorId(idIngresada);
+        pedirPassword();
+        validarPassword();
+    }
+    public static Usuario buscarUsuarioPorId(int id) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId() == id) {
+                return usuario;
+            }
+        }
+        return null; // Devuelve null si no encuentra al usuario con la ID dada
+    }
+    public static void pedirPassword(){
+        if (usuarioEncontrado!=null){
+            System.out.println("Ingresa tu contraseña\n");
+            passwordIngresada = scanner.next();
+        }
+        else{System.out.println("Usuario no encontrado.");}
+    }
+    public static void validarPassword(){
+        boolean passwordCoincide = passwordIngresada.equals(usuarioEncontrado.getPassword());
+        boolean usuarioNoEsNulo = usuarioEncontrado != null;
+
+        if(passwordCoincide&&usuarioNoEsNulo){
+            System.out.println("\n¡Bienvenido, " + usuarioEncontrado.getNombre() + "! \uD83D\uDE00 \n");
+            loginExitoso = true;
+        }else{System.out.println("Contraseña incorrecta.");}
+
+    }
+
+
 
     public static void cargarDatosUsuario() {
         try {
