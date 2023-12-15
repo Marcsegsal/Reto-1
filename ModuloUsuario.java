@@ -32,7 +32,7 @@ public class ModuloUsuario {
                     System.out.println();
                     break;
                 case 2:
-                    ArrayList<Peticion> peticionesUsuario = filtrarPeticionesPorUsuario(usuarioActual.getId());
+                    ArrayList<Peticion> peticionesUsuario = filtrarPeticionesPorUsuario(idIngresada);
                     imprimirPeticiones(peticionesUsuario);
                     //modificarDescripcion();
                     System.out.println();
