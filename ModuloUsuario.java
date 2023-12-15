@@ -120,6 +120,7 @@ public class ModuloUsuario {
         if(usuarioNoEsNulo) {
             boolean passwordCoincide = passwordIngresada.equals(usuarioEncontrado.getPassword());
             if (passwordCoincide) {
+                usuarioActual=usuarioEncontrado;
                 System.out.println("\n¡Bienvenido, " + usuarioEncontrado.getNombre() + "! \uD83D\uDE00 \n");
                 loginExitoso = true;
             }else{System.out.println("Contraseña incorrecta.");}
@@ -196,7 +197,33 @@ public class ModuloUsuario {
         }
     }
 
-    public static void generarPeticion() {}
+    public static void generarPeticion() {
+        scanner.nextLine();
+
+        System.out.println("Ingrese la descripción de la petición:");
+        String descripcion = scanner.nextLine();
+        
+        String fecha = Fecha.ObtenerFechaActual();
+
+        System.out.println("Ingrese el ID de la categoría de la petición:");
+        int idCategoria = scanner.nextInt();
+        
+        Peticion nuevaPeticion = new Peticion(
+                obtenerNuevoIdPeticion(),
+                usuarioActual.getId(),
+                descripcion,
+                fecha,
+                idCategoria,
+                2, //harcodeado de forma provisional
+                2, //harcodeado de forma provisional
+                true
+        );
+
+        // Agrega la nueva petición al ArrayList de peticiones
+        peticiones.add(nuevaPeticion);
+
+        System.out.println("La petición ha sido generada con éxito.");
+    }
 
     public static void consultarPeticion() {}
 
