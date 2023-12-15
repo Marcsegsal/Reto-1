@@ -17,6 +17,9 @@ public class Peticion {
         this.idCategoria = idCategoria;
     }
 
+
+
+
     public int getId() {
         return id;
     }
