@@ -96,7 +96,6 @@ public class ModuloUsuario {
                 String[] atributo =fila.split(",");
                 categorias.add(new Categoria((Integer.parseInt(atributo[0])),atributo [1]));
                 fila= f_in.readLine();
-
             }
             f_in.close();
         }catch (IOException e){
