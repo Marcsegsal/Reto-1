@@ -75,6 +75,7 @@ public class ModuloUsuario {
             }
         } while (eleccionMenu != 0);
     }
+
     public static void mostrarMenu() {
         System.out.println("0-Salir del programa");
         System.out.println("1-Generar una petición");
@@ -114,13 +115,13 @@ public class ModuloUsuario {
         }
         else{System.out.println("Usuario no encontrado.");}
     }
+
     public static void validarPassword(){
         boolean usuarioNoEsNulo = usuarioEncontrado != null;
 
         if(usuarioNoEsNulo) {
             boolean passwordCoincide = passwordIngresada.equals(usuarioEncontrado.getPassword());
             if (passwordCoincide) {
-                usuarioActual=usuarioEncontrado;
                 System.out.println("\n¡Bienvenido, " + usuarioEncontrado.getNombre() + "! \uD83D\uDE00 \n");
                 loginExitoso = true;
             }else{System.out.println("Contraseña incorrecta.");}
@@ -202,15 +203,15 @@ public class ModuloUsuario {
 
         System.out.println("Ingrese la descripción de la petición:");
         String descripcion = scanner.nextLine();
-        
+
         String fecha = Fecha.ObtenerFechaActual();
 
         System.out.println("Ingrese el ID de la categoría de la petición:");
         int idCategoria = scanner.nextInt();
-        
+
         Peticion nuevaPeticion = new Peticion(
                 obtenerNuevoIdPeticion(),
-                usuarioActual.getId(),
+                idIngresada,
                 descripcion,
                 fecha,
                 idCategoria,
@@ -263,13 +264,7 @@ public class ModuloUsuario {
     }
 
     public static boolean stringToBoolean(String s) {
-        boolean b;
-        if (s.equals("true")) {
-            b = true;
-        } else
-            b = false;
-
-        return b;
+        return s.equals("true");
     }
 
     static int inputNumerico() {
