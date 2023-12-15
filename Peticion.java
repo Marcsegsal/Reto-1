@@ -80,4 +80,13 @@ public class Peticion {
     public void setResuelta(boolean resuelta) {
         this.resuelta = resuelta;
     }
+
+
+    public Object getUsuario() {
+        return null;
+    }
+
+    public String getCategoria() {
+        return null;
+    }
 }
