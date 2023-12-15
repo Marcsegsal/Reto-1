@@ -1,7 +1,5 @@
 import java.io.*;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ModuloUsuario {
@@ -14,57 +12,29 @@ public class ModuloUsuario {
     static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     static ArrayList<Categoria> categorias=new ArrayList<>();
     static ArrayList<Peticion> peticiones = new ArrayList<>();
-
-    //Método que he usado para recorrer el arraylist usuarios
-    //No es necesario pero podría mantenerse como una opción a la que puede acceder el admin
-    public static void mostrarUsuarios() {
-        for (Usuario usuario : usuarios) {
-            System.out.println("ID: " + usuario.getId() + ", Nombre: " + usuario.getNombre() + ", Contraseña: " + usuario.getPassword());
-        }
-    }
     public static void main(String[] args) {
         int eleccionMenu;
-        String rol = "usuario";
 
         do {
             cargarDatosUsuario();
-            cargarDatosPeticiones();
-            cargarDatosCategorias();
-            //Borrar luego
-            mostrarUsuarios();
-            //Borrar luego
-            while(!loginExitoso){identificarse(rol);}
-
             mostrarMenu();
-            eleccionMenu = inputNumerico();
+            eleccionMenu = scanner.nextInt();
 
             if (eleccionMenu < 0 || eleccionMenu > 3) {
                 System.out.println("El número introducido no es válido, por favor introduce otro número");
             }
             if (eleccionMenu == 0)
                 guardarDatosPeticiones();
-
+            
             switch (eleccionMenu) {
                 case 1:
                     generarPeticion();
                     System.out.println();
                     break;
                 case 2:
-                    ArrayList<Peticion> peticionesUsuario = filtrarPeticionesPorUsuario(idIngresada);
+                    ArrayList<Peticion> peticionesUsuario = filtrarPeticionesPorUsuario(usuarioActual.getId());
                     imprimirPeticiones(peticionesUsuario);
-
-                    System.out.println("Introduzca el ID de la petición que quiere modificar: ");
-                    int indicePeticion = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.println("Introduzca la nueva descripción (se borrará la descripción anterior): ");
-                    String nuevaDescripcion = scanner.nextLine();
-
-                    boolean descripcionCambiada = modificarDescripcion(indicePeticion, nuevaDescripcion);
-
-                    if (!descripcionCambiada) {
-                        System.out.println("No tiene ninguna solicitud abierta con el ID de petición proporcionado: no se ha podido cambiar la descripción.");
-                    }
+                    //modificarDescripcion();
                     System.out.println();
                     break;
                 case 3:
@@ -75,7 +45,6 @@ public class ModuloUsuario {
             }
         } while (eleccionMenu != 0);
     }
-
     public static void mostrarMenu() {
         System.out.println("0-Salir del programa");
         System.out.println("1-Generar una petición");
@@ -83,50 +52,7 @@ public class ModuloUsuario {
         System.out.println("3-Consultar la petición");
     }
 
-    public static void identificarse(String rol){
-        System.out.println("Ingresa tu ID de " + rol);
-        idIngresada = inputNumerico();
-        usuarioEncontrado = buscarUsuarioPorId(idIngresada);
-        pedirPassword();
-        validarPassword();
-    }
-    public static Usuario buscarUsuarioPorId(int id) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                return usuario;
-            }
-        }
-        return null; // Devuelve null si no encuentra al usuario con la ID dada
-    }
-
-    public static Categoria buscarCategoriaPorId(int id) {
-        for (Categoria categoria : categorias) {
-            if (categoria.getId() == id) {
-                return categoria;
-            }
-        }
-        return null; // Devuelve null si no encuentra al usuario con la ID dada
-    }
-
-    public static void pedirPassword(){
-        if (usuarioEncontrado!=null){
-            System.out.println("Ingresa tu contraseña");
-            passwordIngresada = scanner.next();
-        }
-        else{System.out.println("Usuario no encontrado.");}
-    }
-
-    public static void validarPassword(){
-        boolean usuarioNoEsNulo = usuarioEncontrado != null;
-
-        if(usuarioNoEsNulo) {
-            boolean passwordCoincide = passwordIngresada.equals(usuarioEncontrado.getPassword());
-            if (passwordCoincide) {
-                System.out.println("\n¡Bienvenido, " + usuarioEncontrado.getNombre() + "! \uD83D\uDE00 \n");
-                loginExitoso = true;
-            }else{System.out.println("Contraseña incorrecta.");}
-        }
-    }
+    public static void identificarse() {}
 
     public static void cargarDatosUsuario() {
         try {
@@ -154,7 +80,6 @@ public class ModuloUsuario {
             while (linea != null) {
                 String[] palabras = linea.split(",");
                 peticiones.add(new Peticion((Integer.parseInt(palabras[0])), Integer.parseInt(palabras[1]), palabras[2], palabras[3], Integer.parseInt(palabras[4]), Integer.parseInt(palabras[5]), Integer.parseInt(palabras[6]), stringToBoolean(palabras[7])));
-                linea = f_ent.readLine();
             }
             f_ent.close();
 
@@ -167,7 +92,6 @@ public class ModuloUsuario {
         try{
             BufferedReader f_in= new BufferedReader(new FileReader(new File("./CSV/categoria.csv")));
             String fila=f_in.readLine();
-            fila=f_in.readLine();
             while(fila !=null){
                 String[] atributo =fila.split(",");
                 categorias.add(new Categoria((Integer.parseInt(atributo[0])),atributo [1]));
@@ -175,21 +99,19 @@ public class ModuloUsuario {
 
             }
             f_in.close();
-        } catch (IOException e){
+        }catch (IOException e){
             System.out.println(e.getMessage());
         }
     }
 
     public static void guardarDatosPeticiones() {
         try {
-            PrintWriter f_sal = new PrintWriter(new FileWriter(("./CSV/peticion.csv"), false), false);
+            PrintWriter f_sal = new PrintWriter(new FileWriter("./CSV/peticion.csv"));
             Peticion peticion;
-
-            f_sal.println("idPeticion,idUsuario,descripcion,fecha,idCategoria,idAdmin,estado,resuelta");
 
             for (int i = 0; i < peticiones.size(); i++) {
                 peticion = peticiones.get(i);
-                f_sal.println(peticion.getId() + "," + peticion.getIdUsuario() + "," + peticion.getDescripcion() + "," + peticion.getFecha() + "," + peticion.getIdCategoria() + "," + peticion.getIdAdmin() + "," + peticion.getEstado() + "," + peticion.getResuelta());
+                f_sal.println(peticion.getId() + "," + peticion.getIdUsuario() + "," + peticion.getDescripcion() + "," + peticion.getFecha() + "," + peticion.getIdCategoria() + "\n");
             }
             f_sal.close();
 
@@ -198,56 +120,14 @@ public class ModuloUsuario {
         }
     }
 
-    public static void generarPeticion() {
-        scanner.nextLine();
-
-        System.out.println("Ingrese la descripción de la petición:");
-        String descripcion = scanner.nextLine();
-
-
-        String fecha = Fecha.ObtenerFechaActual();
-
-        System.out.println("Ingrese el ID de la categoría de la petición:");
-        int idCategoria = scanner.nextInt();
-
-        Peticion nuevaPeticion = new Peticion(
-                obtenerNuevoIdPeticion(),
-                idIngresada,
-                descripcion,
-                fecha,
-                idCategoria,
-                2, //harcodeado de forma provisional
-                2, //harcodeado de forma provisional
-                true
-        );
-
-        // Agrega la nueva petición al ArrayList de peticiones
-        peticiones.add(nuevaPeticion);
-
-        System.out.println("La petición ha sido generada con éxito.");
-    }
-
-    public static int obtenerNuevoIdPeticion() {
-        return peticiones.size() + 1;
-    }
+    public static void generarPeticion() {}
 
     public static void consultarPeticion() {}
-
-    public static boolean modificarDescripcion(int indicePeticion, String nuevaDescripcion) {
-        boolean descripcionCambiada = false;
-        for (int i = 0; i < peticiones.size(); i++) {
-            if (peticiones.get(i).getId() == indicePeticion) {
-                peticiones.get(i).setDescripcion(nuevaDescripcion);
-                descripcionCambiada = true;
-            }
-        }
-        return descripcionCambiada;
-    }
 
     public static ArrayList<Peticion> filtrarPeticionesPorUsuario(int idUsuario) {
         ArrayList<Peticion> peticionesUsuario = new ArrayList<>();
 
-        for (int i = 0; i < peticiones.size(); i++) {
+        for (int i = 0; i < peticionesUsuario.size(); i++) {
             if (idUsuario == peticiones.get(i).getIdUsuario()) {
                 peticionesUsuario.add(peticiones.get(i));
             }
@@ -257,30 +137,17 @@ public class ModuloUsuario {
 
     public static void imprimirPeticiones(ArrayList<Peticion> listaPeticiones) {
         for (Peticion peticion : listaPeticiones) {
-            Usuario usuarioActual = buscarUsuarioPorId(peticion.getId());
-            Categoria categoria = buscarCategoriaPorId(peticion.getIdCategoria());
-
-            System.out.println("ID: " + peticion.getId() + "\t|\tFecha.java: " + peticion.getFecha() + "\t|\tPor: " + usuarioActual.getNombre());
-            assert categoria != null;
-            System.out.println("Categoría: " + categoria.getCategoria());
-            System.out.println("Descripción: " + peticion.getDescripcion());
             System.out.println();
         }
     }
 
     public static boolean stringToBoolean(String s) {
-        return s.equals("true");
-    }
+        boolean b;
+        if (s.equals("true")) {
+            b = true;
+        } else
+            b = false;
 
-    static int inputNumerico() {
-        Scanner scanner = new Scanner(System.in);
-        int input;
-        try {
-            input = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            input = -10;
-        }
-        return input;
+        return b;
     }
 }
