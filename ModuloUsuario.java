@@ -259,7 +259,7 @@ public class ModuloUsuario {
             Usuario usuarioActual = buscarUsuarioPorId(peticion.getId());
             Categoria categoria = buscarCategoriaPorId(peticion.getIdCategoria());
 
-            System.out.println("ID: " + peticion.getId() + "\t|\tFecha: " + peticion.getFecha() + "\t|\tPor: " + usuarioActual.getNombre());
+            System.out.println("ID: " + peticion.getId() + "\t|\tFecha.java: " + peticion.getFecha() + "\t|\tPor: " + usuarioActual.getNombre());
             assert categoria != null;
             System.out.println("Categoría: " + categoria.getCategoria());
             System.out.println("Descripción: " + peticion.getDescripcion());
